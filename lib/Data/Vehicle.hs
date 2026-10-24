@@ -1,12 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Data.Vehicle (Vehicle(..), Regulatory(..)) where
+module Data.Vehicle (Vehicle(..), Regulatory(..), Mission(..), Category(..)
+  , Class(..), LaunchOrientation(..), LaunchDomain(..), LandingOrientation(..)
+  , Recovery(..), Mode(..), Capability(..), TermSys(..)) where
 
 import Prettyprinter
 
 data Vehicle = Vehicle{reg :: Regulatory, missn :: Mission, cat :: Category
   , clas :: Class, mode :: Mode, caps :: [Capability], siz :: Size
-  , prop :: Propellant} deriving (Eq, Read, Show)
+  , props :: [Propellant], payload :: Payload} deriving (Eq, Read, Show)
 
 data Regulatory = Gov | Com deriving (Eq, Read, Show)
 
@@ -82,6 +84,11 @@ data Capability = AntiCollision | Propulsive | StationaryPwrdFlight String |
 data TermSys = Thrust | OrdFTS | FlightCtlManip | Other
   deriving (Eq, Read, Show)
 
-data Size = Size deriving (Eq, Read, Show)
+data Size = Size{takeoffWeights :: [(Integer, (Double, Double))]
+  , landingWeights :: [(Integer, (Double, Double))], explosiveEquiv :: (Double, Double)
+  , thrustProf :: [(Double, Double)]} deriving (Eq, Read, Show)
 
-data Propellant = Propellant deriving (Eq, Read, Show)
+data Propellant = Propellant{propSysType :: String, fuelCap :: Double
+  , oxidCap :: Double, otherProps :: [(String, Double)]} deriving (Eq, Read, Show)
+
+data Payload = Payload deriving (Eq, Read, Show)
