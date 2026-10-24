@@ -19,6 +19,9 @@ data Mission = Gov4Gov | Com4Gov | Com4Com | Gov4Com deriving (Eq, Read, Show)
 data Category = Rocket | Spaceplane | LiftingBody | Capsule | Balloon
   deriving (Eq, Read, Show)
 
+instance Pretty Category where
+  pretty = viaShow
+
 data Class = Class{launchOrien :: LaunchOrientation, launchDom :: LaunchDomain
   , landingOrien :: LandingOrientation, recovery :: Recovery}
   deriving (Eq, Read, Show)
@@ -61,7 +64,16 @@ instance Pretty Recovery where
   pretty GroundRecovery = "Ground"
   pretty SeaRecovery = "Sea"
 
-data Mode = Mode deriving (Eq, Read, Show)
+data Mode = Piloted | UnguidedBallistic | AutoGuided | GuidedExtCmds
+  | AutoPilotHybrid deriving (Eq, Read, Show)
+
+instance Pretty Mode where
+  pretty m = case m of
+    Piloted -> "Piloted"
+    UnguidedBallistic -> "Unguided (Ballistic)"
+    AutoGuided -> "Autonomously Guided"
+    GuidedExtCmds -> "Guided with External Commands"
+    AutoPilotHybrid -> "Autonomous and Piloted Hybrid"
 
 data Capability = Capability deriving (Eq, Read, Show)
 
