@@ -25,6 +25,7 @@ library
   exposed-modules:  Data.Vehicle
   build-depends:
     base < 5,
+    prettyprinter
 
 executable vhcl
   default-language: Haskell2010

@@ -1,11 +1,18 @@
-module Data.Vehicle (Vehicle(..)) where
+{-# LANGUAGE OverloadedStrings #-}
+
+module Data.Vehicle (Vehicle(..), Regulatory(..)) where
+
+import Prettyprinter
 
 data Vehicle = Vehicle{reg :: Regulatory, missn :: Mission, cat :: Category
   , clas :: Class, mode :: Mode, cap :: Capability, siz :: Size
-  , prop :: Propellant}
-  deriving (Eq, Read, Show)
+  , prop :: Propellant} deriving (Eq, Read, Show)
 
 data Regulatory = Gov | Com deriving (Eq, Read, Show)
+
+instance Pretty Regulatory where
+  pretty Gov = "Government"
+  pretty Com = "Commercial"
 
 data Mission = Gov4Gov | Com4Gov | Com4Com | Gov4Com deriving (Eq, Read, Show)
 
@@ -13,6 +20,8 @@ data Category = Rocket | Spaceplane | LiftingBody | Capsule | Balloon
   deriving (Eq, Read, Show)
 
 data Class = Class deriving (Eq, Read, Show)
+
+data LaunchOrientation = VertLaunch | HorizLaunch
 
 data Mode = Mode deriving (Eq, Read, Show)
 
