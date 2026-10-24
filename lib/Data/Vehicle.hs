@@ -91,4 +91,5 @@ data Size = Size{takeoffWeights :: [(Integer, (Double, Double))]
 data Propellant = Propellant{propSysType :: String, fuelCap :: Double
   , oxidCap :: Double, otherProps :: [(String, Double)]} deriving (Eq, Read, Show)
 
-data Payload = Payload deriving (Eq, Read, Show)
+data Payload = Humans | LiveAnimals | LiveViableBiologics
+  | NonLivingNonHazardCargo | HazardCargo deriving (Eq, Read, Show)
