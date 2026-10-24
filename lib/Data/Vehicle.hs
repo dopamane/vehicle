@@ -78,7 +78,7 @@ instance Pretty Mode where
     AutoPilotHybrid -> "Autonomous and Piloted Hybrid"
 
 data Capability = AntiCollision | Propulsive | StationaryPwrdFlight String |
-  FastSlowApproachLandingSpeed [String] Double | GearCfg String | JettiBody String |
+  FastSlowApproachLandingSpeed [(Double, Double)] Double | GearCfg String | JettiBody String |
   Stage Integer Bool (Maybe Bool) | TermSys TermSys deriving (Eq, Read, Show)
 
 data TermSys = Thrust | OrdFTS | FlightCtlManip | Other
