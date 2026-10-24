@@ -2,7 +2,8 @@
 
 module Data.Vehicle (Vehicle(..), Regulatory(..), Mission(..), Category(..)
   , Class(..), LaunchOrientation(..), LaunchDomain(..), LandingOrientation(..)
-  , Recovery(..), Mode(..), Capability(..), TermSys(..)) where
+  , Recovery(..), Mode(..), Capability(..), TermSys(..), Size(..)
+  , Propellant(..), Payload(..)) where
 
 import Prettyprinter
 
