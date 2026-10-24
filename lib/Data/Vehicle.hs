@@ -23,16 +23,43 @@ data Class = Class{launchOrien :: LaunchOrientation, launchDom :: LaunchDomain
   , landingOrien :: LandingOrientation, recovery :: Recovery}
   deriving (Eq, Read, Show)
 
+instance Pretty Class where
+  pretty c = vsep ["Launch Orientation:" <+> pretty (launchOrien c)
+    , "Launch Domain:" <+> pretty (launchDom c)
+    , "Landing Orientation:" <+> pretty (landingOrien c)
+    , "Recovery:" <+> pretty (recovery c)]
+
 data LaunchOrientation = VertLaunch | HorizLaunch | PayldLaunch
   deriving (Eq, Read, Show)
+
+instance Pretty LaunchOrientation where
+  pretty VertLaunch = "Vertical"
+  pretty HorizLaunch = "Horizontal"
+  pretty PayldLaunch = "Payload"
 
 data LaunchDomain = AirLaunch | GroundLaunch | SeaLaunch | SpaceLaunch
   deriving (Eq, Read, Show)
 
+instance Pretty LaunchDomain where
+  pretty l = case l of
+    AirLaunch -> "Air"
+    GroundLaunch -> "Ground"
+    SeaLaunch -> "Sea"
+    SpaceLaunch -> "Space"
+
 data LandingOrientation = VertLand | HorizLand deriving (Eq, Read, Show)
+
+instance Pretty LandingOrientation where
+  pretty VertLand = "Vertical"
+  pretty HorizLand = "Horizontal"
 
 data Recovery = AirRecovery | GroundRecovery | SeaRecovery
   deriving (Eq, Read, Show)
+
+instance Pretty Recovery where
+  pretty AirRecovery = "Air"
+  pretty GroundRecovery = "Ground"
+  pretty SeaRecovery = "Sea"
 
 data Mode = Mode deriving (Eq, Read, Show)
 
