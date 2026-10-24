@@ -19,15 +19,20 @@ data Mission = Gov4Gov | Com4Gov | Com4Com | Gov4Com deriving (Eq, Read, Show)
 data Category = Rocket | Spaceplane | LiftingBody | Capsule | Balloon
   deriving (Eq, Read, Show)
 
-data Class = Class deriving (Eq, Read, Show)
+data Class = Class{launchOrien :: LaunchOrientation, launchDom :: LaunchDomain
+  , landingOrien :: LandingOrientation, recovery :: Recovery}
+  deriving (Eq, Read, Show)
 
 data LaunchOrientation = VertLaunch | HorizLaunch | PayldLaunch
+  deriving (Eq, Read, Show)
 
 data LaunchDomain = AirLaunch | GroundLaunch | SeaLaunch | SpaceLaunch
+  deriving (Eq, Read, Show)
 
-data LandingOrientation = VertLand | HorizLand
+data LandingOrientation = VertLand | HorizLand deriving (Eq, Read, Show)
 
 data Recovery = AirRecovery | GroundRecovery | SeaRecovery
+  deriving (Eq, Read, Show)
 
 data Mode = Mode deriving (Eq, Read, Show)
 
