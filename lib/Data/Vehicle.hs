@@ -21,7 +21,11 @@ data Category = Rocket | Spaceplane | LiftingBody | Capsule | Balloon
 
 data Class = Class deriving (Eq, Read, Show)
 
-data LaunchOrientation = VertLaunch | HorizLaunch
+data LaunchOrientation = VertLaunch | HorizLaunch | PayldLaunch
+
+data LaunchDomain = Air | Ground | Sea | Space
+
+data LandingOrientation = VertLand | HorizLand
 
 data Mode = Mode deriving (Eq, Read, Show)
 
