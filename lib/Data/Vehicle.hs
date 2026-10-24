@@ -23,9 +23,11 @@ data Class = Class deriving (Eq, Read, Show)
 
 data LaunchOrientation = VertLaunch | HorizLaunch | PayldLaunch
 
-data LaunchDomain = Air | Ground | Sea | Space
+data LaunchDomain = AirLaunch | GroundLaunch | SeaLaunch | SpaceLaunch
 
 data LandingOrientation = VertLand | HorizLand
+
+data Recovery = AirRecovery | GroundRecovery | SeaRecovery
 
 data Mode = Mode deriving (Eq, Read, Show)
 
