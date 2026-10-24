@@ -25,6 +25,7 @@ library
   exposed-modules:  Data.Vehicle
   build-depends:
     base < 5,
+    binary,
     prettyprinter
 
 executable vhcl
