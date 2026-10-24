@@ -5,7 +5,7 @@ module Data.Vehicle (Vehicle(..), Regulatory(..)) where
 import Prettyprinter
 
 data Vehicle = Vehicle{reg :: Regulatory, missn :: Mission, cat :: Category
-  , clas :: Class, mode :: Mode, cap :: Capability, siz :: Size
+  , clas :: Class, mode :: Mode, caps :: [Capability], siz :: Size
   , prop :: Propellant} deriving (Eq, Read, Show)
 
 data Regulatory = Gov | Com deriving (Eq, Read, Show)
@@ -75,7 +75,12 @@ instance Pretty Mode where
     GuidedExtCmds -> "Guided with External Commands"
     AutoPilotHybrid -> "Autonomous and Piloted Hybrid"
 
-data Capability = Capability deriving (Eq, Read, Show)
+data Capability = AntiCollision | Propulsive | StationaryPwrdFlight String |
+  FastSlowApproachLandingSpeed [String] Double | GearCfg String | JettiBody String |
+  Stage Integer Bool (Maybe Bool) | TermSys TermSys deriving (Eq, Read, Show)
+
+data TermSys = Thrust | OrdFTS | FlightCtlManip | Other
+  deriving (Eq, Read, Show)
 
 data Size = Size deriving (Eq, Read, Show)
 
