@@ -67,13 +67,17 @@ parseLaunchOrien = asum [flag VertLaunch VertLaunch $ long "vert"
   , flag' HorizLaunch $ long "horiz", flag' PayldLaunch $ long "payld"]
 
 parseLaunchDom :: Parser LaunchDomain
-parseLaunchDom = undefined
+parseLaunchDom = asum [flag AirLaunch AirLaunch $ long "air",
+  flag' GroundLaunch $ long "ground", flag' SeaLaunch $ long "sea",
+  flag' SpaceLaunch $ long "space"]
 
 parseLandingOrien :: Parser LandingOrientation
-parseLandingOrien = undefined
+parseLandingOrien = flag VertLand VertLand (long "vert") <|>
+  flag' HorizLand (long "horiz")
 
 parseRecovery :: Parser Recovery
-parseRecovery = undefined
+parseRecovery = flag AirRecovery AirRecovery (long "air") <|>
+  flag' GroundRecovery (long "ground") <|> flag' SeaRecovery (long "sea")
 
 parseMode :: Parser Mode
 parseMode = undefined
