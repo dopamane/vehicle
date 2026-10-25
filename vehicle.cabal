@@ -33,8 +33,13 @@ executable vhcl
   ghc-options:      -Wall -O2 -threaded
   hs-source-dirs:   exe
   main-is:          Main.hs
+  other-modules:    Paths_vehicle
+  autogen-modules:  Paths_vehicle
   build-depends:
     base < 5,
+    binary,
+    bytestring,
+    optparse-applicative,
     vehicle
 
 test-suite test
