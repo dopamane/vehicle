@@ -37,17 +37,17 @@ fileArg = strArgument $ metavar "FILE" <> completer (bashCompleter "file")
   <> help "Optional binary input file otherwise stream STDIN"
 
 parseVehicle :: Parser Vehicle
-parseVehicle = Vehicle <$> parseReg <*> parseMissn <*> parseCat <*> parseClass
+parseVehicle = Vehicle <$> parseRegTy <*> parseMissnTy <*> parseCat <*> parseClass
   <*> parseMode <*> many parseCap <*> parseSiz <*> many parseProp <*>
   many parsePayload
 
-parseReg :: Parser Regulatory
-parseReg = parserOptionGroup "Regulatory type" $
+parseRegTy :: Parser RegTy
+parseRegTy = parserOptionGroup "Regulatory type" $
   flag Gov Gov (long "gov" <> help "Government default") <|>
   flag' Com (long "com" <> help "Commerical")
 
-parseMissn :: Parser Mission
-parseMissn = asum
+parseMissnTy :: Parser MissnTy
+parseMissnTy = parserOptionGroup "Mission Type" $ asum
   [ flag Gov4Gov Gov4Gov $ long "gov-gov" <> help "Government for Government default"
   , flag' Com4Gov $ long "com-gov" <> help "Commerical for Government"
   , flag' Com4Com $ long "com-com" <> help "Commerical for Commercial"
