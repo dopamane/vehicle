@@ -38,8 +38,7 @@ fileArg = strArgument $ metavar "FILE" <> completer (bashCompleter "file")
 
 parseVehicle :: Parser Vehicle
 parseVehicle = Vehicle <$> parseRegTy <*> parseMissnTy <*> parseCat <*> parseClass
-  <*> parseMode <*> many parseCap <*> parseSiz <*> many parseProp <*>
-  many parsePayload
+  <*> parseMode <*> many parseCap <*> parseSiz <*> many parseProp <*> many parsePayld
 
 parseRegTy :: Parser RegTy
 parseRegTy = parserOptionGroup "Regulatory type" $
@@ -131,13 +130,19 @@ parseSiz = Size <$> many parseWeight <*> many parseWeight <*>
 parseWeight :: Parser (Integer, (Double, Double))
 parseWeight = (,) <$> option auto (long "stage-num") <*> parsePt
 
-parseProp :: Parser Propellant
-parseProp = Propellant <$> strOption (long "system-type") <*>
-  option auto (long "fuel-cap") <*> option auto (long "oxidize") <*>
-  many ((,) <$> strOption (long "other-ident") <*> option auto (long "other-cap"))
+parseProp :: Parser Prop
+parseProp = parserOptionGroup "Propellant" $ asum
+  [ fmap Sys $ strOption $ long "sys" <> metavar "STR" <> help "system type"
+  , Fuel <$> strOption (long "fuel" <> metavar "STR" <> help "fuel type")
+    <*> option auto (long "fuel-cap" <> metavar "DBL" <> help "fuel capacity kg")
+  , Oxidizr <$> strOption (long "oxid" <> metavar "STR" <> help "oxidizer type")
+    <*> option auto (long "oxid-cap" <> metavar "DBL" <> help "oxidizer capacity kg")
+  , OtherProp <$> strOption (long "other-prop" <> metavar "STR" <> help "other propellant type")
+    <*> option auto (long "other-cap" <> metavar "DBL" <> help "other propellant capacity kg")
+  ]
 
-parsePayload :: Parser Payload
-parsePayload = parserOptionGroup "Payload" $ asum
+parsePayld :: Parser Payld
+parsePayld = parserOptionGroup "Payload" $ asum
   [ fmap Human $ strOption $ long "human" <> metavar "STR" <> help "humans"
   , fmap Animal $ strOption $ long "animal" <> metavar "STR" <> help "animals"
   , fmap Biologic $ strOption $ long "biologic" <> metavar "STR" <> help "plants etc."

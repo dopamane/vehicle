@@ -3,15 +3,15 @@
 
 module Data.Vehicle (Vehicle(..), RegTy(..), MissnTy(..), Cat(..), Class(..)
   , LnchOrie(..), LnchDom(..), LndOrie(..), Recov(..)
-  , Mode(..), Capability(..), TermSys(..), Size(..)
-  , Propellant(..), Payload(..)) where
+  , Mode(..), Capability(..), TermSys(..), Size(..), Prop(..), Payld(..)
+  ) where
 
 import Data.Binary
 import GHC.Generics
 
 data Vehicle = Vehicle{regTy :: RegTy, missnTy :: MissnTy, cat :: Cat
   , clas :: Class, mode :: Mode, caps :: [Capability], siz :: Size
-  , props :: [Propellant], payload :: [Payload]}
+  , props :: [Prop], payld :: [Payld]}
   deriving (Binary, Eq, Generic, Read, Show)
 
 data RegTy = Gov | Com deriving (Binary, Eq, Generic, Read, Show)
@@ -54,10 +54,9 @@ data Size = Size{takeoffWeights :: [(Integer, (Double, Double))]
   , landingWeights :: [(Integer, (Double, Double))], explosiveEquiv :: (Double, Double)
   , thrustProf :: [(Double, Double)]} deriving (Binary, Eq, Generic, Read, Show)
 
-data Propellant = Propellant{propSysType :: String, fuelCap :: Double
-  , oxidCap :: Double, otherProps :: [(String, Double)]}
+data Prop = Sys String | Fuel String Double | Oxidizr String Double | OtherProp String Double
   deriving (Binary, Eq, Generic, Read, Show)
 
-data Payload = Human String | Animal String | Biologic String | Cargo String
+data Payld = Human String | Animal String | Biologic String | Cargo String
   | Hazard String
   deriving (Binary, Eq, Generic, Read, Show)
