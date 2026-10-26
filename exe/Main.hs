@@ -110,13 +110,19 @@ parseTermSys = asum
   , flag' Other $ long "other"]
 
 parsePt :: Parser (Double, Double)
-parsePt = undefined
+parsePt = (,) <$> option auto (short 'x') <*> option auto (short 'y')
 
 parseSiz :: Parser Size
 parseSiz = undefined
 
 parseProp :: Parser Propellant
-parseProp = undefined
+parseProp = Propellant <$> strOption (long "system-type") <*>
+  option auto (long "fuel-cap") <*> option auto (long "oxidize") <*>
+  many ((,) <$> strOption (long "other-ident") <*> option auto (long "other-cap"))
 
 parsePayload :: Parser Payload
-parsePayload = undefined
+parsePayload = asum [flag Humans Humans $ long "humans",
+  flag' LiveAnimals $ long "live-animals",
+  flag' LiveViableBiologics $ long "live-viable-bio",
+  flag' NonLivingNonHazardCargo $ long "non-living-non-hazard",
+  flag' HazardCargo $ long "hazard"]
