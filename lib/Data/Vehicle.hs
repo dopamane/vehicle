@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveGeneric  #-}
 
 module Data.Vehicle (Vehicle(..), RegTy(..), MissnTy(..), Cat(..)
-  , Class(..), LnchOrie(..), LaunchDomain(..), LandingOrientation(..)
+  , Class(..), LnchOrie(..), LnchDom(..), LandingOrientation(..)
   , Recovery(..), Mode(..), Capability(..), TermSys(..), Size(..)
   , Propellant(..), Payload(..)) where
 
@@ -22,7 +22,7 @@ data MissnTy = GovGov | ComGov | ComCom | GovCom
 data Cat = Rocket | Spaceplane | LiftingBody | Capsule | Balloon
   deriving (Binary, Eq, Generic, Read, Show)
 
-data Class = Class{lnchOrie :: LnchOrie, launchDom :: LaunchDomain
+data Class = Class{lnchOrie :: LnchOrie, lnchDom :: LnchDom
   , landingOrien :: LandingOrientation, recovery :: Recovery}
   deriving (Binary, Eq, Generic, Read, Show)
 
@@ -30,7 +30,8 @@ data Class = Class{lnchOrie :: LnchOrie, launchDom :: LaunchDomain
 data LnchOrie = VertLnch | HorizLnch | PayldLnch
   deriving (Binary, Eq, Generic, Read, Show)
 
-data LaunchDomain = AirLaunch | GroundLaunch | SeaLaunch | SpaceLaunch
+-- | Launch domain
+data LnchDom = Air | Gnd | Sea | Spce
   deriving (Binary, Eq, Generic, Read, Show)
 
 data LandingOrientation = VertLand | HorizLand

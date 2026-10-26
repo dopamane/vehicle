@@ -70,15 +70,15 @@ parseCat = parserOptionGroup "Category" $ asum
 parseClass :: Parser Class
 parseClass = parserOptionGroup "Class" $ Class
   <$> asum
-    [ flag VertLnch VertLnch $ long "vert-lnch" <> help "Vertical launch orientation default"
-    , flag' HorizLnch $ long "horiz-lnch" <> help "Horizontal launch orientation"
-    , flag' PayldLnch $ long "payld-lnch" <> help "Payload launch orientation"]
-  <*> parseLaunchDom <*> parseLandingOrien <*> parseRecovery
+    [ flag VertLnch VertLnch $ long "vert-lnch" <> help "vertical launch orientation default"
+    , flag' HorizLnch $ long "horiz-lnch" <> help "horizontal launch orientation"
+    , flag' PayldLnch $ long "payld-lnch" <> help "payload launch orientation"]
+  <*> asum [flag Air Air $ long "air" <> help "air launch domain default",
+    flag' Gnd $ long "gnd" <> help "ground launch domain",
+    flag' Sea $ long "sea" <> help "sea launch domain",
+    flag' Spce $ long "spce" <> help "space launch domain"]
+  <*> parseLandingOrien <*> parseRecovery
 
-parseLaunchDom :: Parser LaunchDomain
-parseLaunchDom = asum [flag AirLaunch AirLaunch $ long "air",
-  flag' GroundLaunch $ long "ground", flag' SeaLaunch $ long "sea",
-  flag' SpaceLaunch $ long "space"]
 
 parseLandingOrien :: Parser LandingOrientation
 parseLandingOrien = flag VertLand VertLand (long "vert") <|>
