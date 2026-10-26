@@ -80,10 +80,31 @@ parseRecovery = flag AirRecovery AirRecovery (long "air") <|>
   flag' GroundRecovery (long "ground") <|> flag' SeaRecovery (long "sea")
 
 parseMode :: Parser Mode
-parseMode = undefined
+parseMode = asum [flag Piloted Piloted $ long "piloted",
+  flag' UnguidedBallistic $ long "unguided-ballistic",
+  flag' AutoGuided $ long "auto-guided", flag' GuidedExtCmds $ long "guided-ext"
+  , flag' AutoPilotHybrid $ long "auto-pilot-hybrid"]
 
 parseCap :: Parser Capability
-parseCap = undefined
+parseCap = asum
+  [ flag' AntiCollision $ long "anti-collision"
+  , flag' Propulsive $ long "propulsive"
+  , fmap StationaryPwrdFlight $ strOption $ long "stat-pwr-flight"
+    <> help "Stationary powered flight"
+  , FastSlowApproachLandingSpeed <$> many parsePt <*>
+    option auto (long "landing-speed")
+  , GearCfg <$> strOption (long "gear-cfg")
+  , JettiBody <$> strOption (long "jetti-bdy")
+  , Stage <$> option auto (long "stage") <*> switch (long "ctl-reentry") <*>
+    optional (switch $ long "reusable")
+  , TermSys <$> parseTermSys
+  ]
+
+parseTermSys :: Parser TermSys
+parseTermSys = undefined
+
+parsePt :: Parser (Double, Double)
+parsePt = undefined
 
 parseSiz :: Parser Size
 parseSiz = undefined
