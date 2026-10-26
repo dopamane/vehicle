@@ -38,11 +38,13 @@ fileArg = strArgument $ metavar "FILE" <> completer (bashCompleter "file")
 
 parseVehicle :: Parser Vehicle
 parseVehicle = Vehicle <$> parseReg <*> parseMissn <*> parseCat <*> parseClass
-  <*> parseMode <*> many parseCap <*> parseSiz <*> many parseProp <*> parsePayload
+  <*> parseMode <*> many parseCap <*> parseSiz <*> many parseProp <*>
+  many parsePayload
 
 parseReg :: Parser Regulatory
-parseReg = flag' Gov (long "gov" <> help "Government regulatory") <|>
-  flag' Com (long "com" <> help "Commerical regulatory")
+parseReg = parserOptionGroup "Regulatory type" $
+  flag Gov Gov (long "gov" <> help "Government default") <|>
+  flag' Com (long "com" <> help "Commerical")
 
 parseMissn :: Parser Mission
 parseMissn = asum
@@ -126,7 +128,8 @@ parseProp = Propellant <$> strOption (long "system-type") <*>
   many ((,) <$> strOption (long "other-ident") <*> option auto (long "other-cap"))
 
 parsePayload :: Parser Payload
-parsePayload = asum [flag Humans Humans $ long "humans",
+parsePayload = parserOptionGroup "Payload" $ asum [
+  flag' Humans $ long "humans",
   flag' LiveAnimals $ long "live-animals",
   flag' LiveViableBiologics $ long "live-viable-bio",
   flag' NonLivingNonHazardCargo $ long "non-living-non-hazard",

@@ -12,7 +12,7 @@ import GHC.Generics
 
 data Vehicle = Vehicle{reg :: Regulatory, missn :: Mission, cat :: Category
   , clas :: Class, mode :: Mode, caps :: [Capability], siz :: Size
-  , props :: [Propellant], payload :: Payload}
+  , props :: [Propellant], payload :: [Payload]}
   deriving (Binary, Eq, Generic, Read, Show)
 
 data Regulatory = Gov | Com deriving (Binary, Eq, Generic, Read, Show)
