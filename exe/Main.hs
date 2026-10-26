@@ -48,10 +48,10 @@ parseRegTy = parserOptionGroup "Regulatory type" $
 
 parseMissnTy :: Parser MissnTy
 parseMissnTy = parserOptionGroup "Mission Type" $ asum
-  [ flag Gov4Gov Gov4Gov $ long "gov-gov" <> help "Government for Government default"
-  , flag' Com4Gov $ long "com-gov" <> help "Commerical for Government"
-  , flag' Com4Com $ long "com-com" <> help "Commerical for Commercial"
-  , flag' Gov4Com $ long "gov-com" <> help "Government for Commerical"
+  [ flag GovGov GovGov $ long "gov-gov" <> help "Government for Government default"
+  , flag' ComGov $ long "com-gov" <> help "Commerical for Government"
+  , flag' ComCom $ long "com-com" <> help "Commerical for Commercial"
+  , flag' GovCom $ long "gov-com" <> help "Government for Commerical"
   ]
 
 parseCat :: Parser Cat
@@ -68,12 +68,12 @@ parseCat = parserOptionGroup "Category" $ asum
     \ hovers in stratosphere"]
 
 parseClass :: Parser Class
-parseClass = Class <$> parseLaunchOrien <*> parseLaunchDom <*>
-  parseLandingOrien <*> parseRecovery
-
-parseLaunchOrien :: Parser LaunchOrientation
-parseLaunchOrien = asum [flag VertLaunch VertLaunch $ long "vert"
-  , flag' HorizLaunch $ long "horiz", flag' PayldLaunch $ long "payld"]
+parseClass = parserOptionGroup "Class" $ Class
+  <$> asum
+    [ flag VertLnch VertLnch $ long "vert-lnch" <> help "Vertical launch orientation default"
+    , flag' HorizLnch $ long "horiz-lnch" <> help "Horizontal launch orientation"
+    , flag' PayldLnch $ long "payld-lnch" <> help "Payload launch orientation"]
+  <*> parseLaunchDom <*> parseLandingOrien <*> parseRecovery
 
 parseLaunchDom :: Parser LaunchDomain
 parseLaunchDom = asum [flag AirLaunch AirLaunch $ long "air",

@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveGeneric  #-}
 
 module Data.Vehicle (Vehicle(..), RegTy(..), MissnTy(..), Cat(..)
-  , Class(..), LaunchOrientation(..), LaunchDomain(..), LandingOrientation(..)
+  , Class(..), LnchOrie(..), LaunchDomain(..), LandingOrientation(..)
   , Recovery(..), Mode(..), Capability(..), TermSys(..), Size(..)
   , Propellant(..), Payload(..)) where
 
@@ -16,17 +16,18 @@ data Vehicle = Vehicle{regTy :: RegTy, missnTy :: MissnTy, cat :: Cat
 
 data RegTy = Gov | Com deriving (Binary, Eq, Generic, Read, Show)
 
-data MissnTy = Gov4Gov | Com4Gov | Com4Com | Gov4Com
+data MissnTy = GovGov | ComGov | ComCom | GovCom
   deriving (Binary, Eq, Generic, Read, Show)
 
 data Cat = Rocket | Spaceplane | LiftingBody | Capsule | Balloon
   deriving (Binary, Eq, Generic, Read, Show)
 
-data Class = Class{launchOrien :: LaunchOrientation, launchDom :: LaunchDomain
+data Class = Class{lnchOrie :: LnchOrie, launchDom :: LaunchDomain
   , landingOrien :: LandingOrientation, recovery :: Recovery}
   deriving (Binary, Eq, Generic, Read, Show)
 
-data LaunchOrientation = VertLaunch | HorizLaunch | PayldLaunch
+-- | Launch Orientation
+data LnchOrie = VertLnch | HorizLnch | PayldLnch
   deriving (Binary, Eq, Generic, Read, Show)
 
 data LaunchDomain = AirLaunch | GroundLaunch | SeaLaunch | SpaceLaunch
