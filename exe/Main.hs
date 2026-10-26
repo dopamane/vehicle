@@ -108,17 +108,12 @@ parseCap = asum
   , JettiBody <$> strOption (long "jetti-bdy")
   , Stage <$> option auto (long "stage") <*> switch (long "ctl-reentry") <*>
     optional (switch $ long "reusable")
-  , TermSys <$> parseTermSys
-  ]
-
-parseTermSys :: Parser TermSys
-parseTermSys = asum
-  [ flag' Thrust $ long "thrust"
-  , flag' OrdFTS $ long "ord-fts" <>
-    help "Ordnance flight termination system (FTS)"
-  , flag' FlightCtlManip $ long "flight-ctl-manip" <>
-    help "Flight control manipulation"
-  , flag' Other $ long "other"]
+  , TermSys <$> asum
+    [ flag' Thrustt $ long "thrst" <> help "thrust termination system"
+    , flag' OrdFTS $ long "ofts" <> help "ordnance flight termination system (FTS)"
+    , flag' FlightCtlManip $ long "fcm" <> help "flight control manipulation termination system"
+    , fmap Ots $ strOption $ long "ots" <> metavar "STR" <>
+      help "other termination system"]]
 
 parsePt :: Parser (Double, Double)
 parsePt = (,) <$> option auto (short 'x') <*> option auto (short 'y')

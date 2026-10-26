@@ -2,8 +2,8 @@
 {-# LANGUAGE DeriveGeneric  #-}
 
 module Data.Vehicle (Vehicle(..), RegTy(..), MissnTy(..), Cat(..), Class(..)
-  , LnchOrie(..), LnchDom(..), LndOrie(..), Recov(..)
-  , Mode(..), Capability(..), TermSys(..), Size(..), Prop(..), Payld(..)
+  , LnchOrie(..), LnchDom(..), LndOrie(..), Recov(..), Mode(..), Capability(..)
+  , TSys(..), Size(..), Prop(..), Payld(..)
   ) where
 
 import Data.Binary
@@ -44,10 +44,10 @@ data Mode = Piloted | UnguidedBallistic | AutoGuided | GuidedExtCmds
 
 data Capability = AntiCollision | Propulsive | StationaryPwrdFlight String |
   FastSlowApproachLandingSpeed [(Double, Double)] Double | GearCfg String | JettiBody String |
-  Stage Integer Bool (Maybe Bool) | TermSys TermSys
+  Stage Integer Bool (Maybe Bool) | TermSys TSys
   deriving (Binary, Eq, Generic, Read, Show)
 
-data TermSys = Thrust | OrdFTS | FlightCtlManip | Other
+data TSys = Thrustt | OrdFTS | FlightCtlManip | Ots String
   deriving (Binary, Eq, Generic, Read, Show)
 
 data Size = LnchSz Integer Double Double | RntrySz Integer Double Double
