@@ -85,10 +85,16 @@ parseClass = parserOptionGroup "Class" $ Class
     flag' SeaRec $ long "sea-rec" <> help "sea recovery"]
 
 parseMode :: Parser Mode
-parseMode = asum [flag Piloted Piloted $ long "piloted",
-  flag' UnguidedBallistic $ long "unguided-ballistic",
-  flag' AutoGuided $ long "auto-guided", flag' GuidedExtCmds $ long "guided-ext"
-  , flag' AutoPilotHybrid $ long "auto-pilot-hybrid"]
+parseMode = parserOptionGroup "Mode" $ asum
+  [ flag Piloted Piloted $ long "piloted" <> help "flight ctl by human default"
+  , flag' UnguidedBallistic $ long "unguided-ballistic" <>
+    help "flight path det by environ factors"
+  , flag' AutoGuided $ long "auto-guided" <> help "flight ctl by onboard computa"
+  , flag' GuidedExtCmds $ long "guided-ext" <>
+    help "flight guided by computer & external cmds"
+  , flag' AutoPilotHybrid $ long "auto-pilot-hybrid" <>
+    help "flight ctl by human and/or computer"
+  ]
 
 parseCap :: Parser Capability
 parseCap = asum
