@@ -38,7 +38,8 @@ fileArg = strArgument $ metavar "FILE" <> completer (bashCompleter "file")
 
 parseVehicle :: Parser Vehicle
 parseVehicle = Vehicle <$> parseRegTy <*> parseMissnTy <*> parseCat <*> parseClass
-  <*> parseMode <*> many parseCap <*> parseSiz <*> many parseProp <*> many parsePayld
+  <*> parseMode <*> many parseCap <*> many parseSiz <*> many parseProp
+  <*> many parsePayld
 
 parseRegTy :: Parser RegTy
 parseRegTy = parserOptionGroup "Regulatory type" $
@@ -123,12 +124,18 @@ parsePt :: Parser (Double, Double)
 parsePt = (,) <$> option auto (short 'x') <*> option auto (short 'y')
 
 parseSiz :: Parser Size
-parseSiz = Size <$> many parseWeight <*> many parseWeight <*>
-  liftA2 (,) (option auto $ long "begin") (option auto $ long "end")
-  <*> many parsePt
-
-parseWeight :: Parser (Integer, (Double, Double))
-parseWeight = (,) <$> option auto (long "stage-num") <*> parsePt
+parseSiz = parserOptionGroup "Size" $ asum
+  [ LnchSz <$> option auto (long "lnch-stg" <> metavar "INT" <> help "launch stage")
+    <*> option auto (long "lnch-bgn" <> metavar "DBL" <> help "launch weight begin kg")
+    <*> option auto (long "lnch-end" <> metavar "DBL" <> help "launch weight end kg")
+  , RntrySz <$> option auto (long "rntry-stg" <> metavar "INT" <> help "reentry stage")
+    <*> option auto (long "rntry-bgn" <> metavar "DBL" <> help "reentry weight begin kg")
+    <*> option auto (long "rntry-end" <> metavar "DBL" <> help "reentry weight end kg")
+  , Explosv <$> option auto (long "explo-bgn" <> metavar "DBL" <> help "explosive begin TNT")
+    <*> option auto (long "explo-end" <> metavar "DBL" <> help "explosive end TNT")
+  , fmap Thrustp $ some $ (,)
+    <$> option auto (short 't' <> metavar "DBL" <> help "thrust profile time")
+    <*> option auto (short 'n' <> metavar "DBL" <> help "thrust profile N")]
 
 parseProp :: Parser Prop
 parseProp = parserOptionGroup "Propellant" $ asum

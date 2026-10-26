@@ -10,7 +10,7 @@ import Data.Binary
 import GHC.Generics
 
 data Vehicle = Vehicle{regTy :: RegTy, missnTy :: MissnTy, cat :: Cat
-  , clas :: Class, mode :: Mode, caps :: [Capability], siz :: Size
+  , clas :: Class, mode :: Mode, caps :: [Capability], sizs :: [Size]
   , props :: [Prop], payld :: [Payld]}
   deriving (Binary, Eq, Generic, Read, Show)
 
@@ -50,9 +50,9 @@ data Capability = AntiCollision | Propulsive | StationaryPwrdFlight String |
 data TermSys = Thrust | OrdFTS | FlightCtlManip | Other
   deriving (Binary, Eq, Generic, Read, Show)
 
-data Size = Size{takeoffWeights :: [(Integer, (Double, Double))]
-  , landingWeights :: [(Integer, (Double, Double))], explosiveEquiv :: (Double, Double)
-  , thrustProf :: [(Double, Double)]} deriving (Binary, Eq, Generic, Read, Show)
+data Size = LnchSz Integer Double Double | RntrySz Integer Double Double
+  | Explosv Double Double | Thrustp [(Double, Double)]
+  deriving (Binary, Eq, Generic, Read, Show)
 
 data Prop = Sys String | Fuel String Double | Oxidizr String Double | OtherProp String Double
   deriving (Binary, Eq, Generic, Read, Show)
