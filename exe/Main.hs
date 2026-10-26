@@ -54,11 +54,18 @@ parseMissnTy = parserOptionGroup "Mission Type" $ asum
   , flag' Gov4Com $ long "gov-com" <> help "Government for Commerical"
   ]
 
-parseCat :: Parser Category
-parseCat = asum
-  [ flag Rocket Rocket $ long "rocket", flag' Spaceplane $ long "spaceplane",
-    flag' LiftingBody $ long "lifting-body", flag' Capsule $ long "capsule",
-    flag' Balloon $ long "balloon"]
+parseCat :: Parser Cat
+parseCat = parserOptionGroup "Category" $ asum
+  [ flag Rocket Rocket $ long "rocket" <>
+    help "propelled and steered by combustion regardless or launch orien or method, default"
+  , flag' Spaceplane $ long "spaceplane" <>
+    help "winged vehicle, self-propelled, steered by aerodynmic flight ctl in atmosphere, \
+         \can also operate above atmosphere"
+  , flag' LiftingBody $ long "lifting-body" <> help "winged, reenters as unpowered glider"
+  , flag' Capsule $ long "capsule" <> help "aerodynamic stable reentry with\
+    \ negligible steering capability"
+  , flag' Balloon $ long "balloon" <> help "gas propelled lighter-than-air,\
+    \ hovers in stratosphere"]
 
 parseClass :: Parser Class
 parseClass = Class <$> parseLaunchOrien <*> parseLaunchDom <*>

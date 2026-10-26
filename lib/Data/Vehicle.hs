@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric  #-}
 
-module Data.Vehicle (Vehicle(..), RegTy(..), MissnTy(..), Category(..)
+module Data.Vehicle (Vehicle(..), RegTy(..), MissnTy(..), Cat(..)
   , Class(..), LaunchOrientation(..), LaunchDomain(..), LandingOrientation(..)
   , Recovery(..), Mode(..), Capability(..), TermSys(..), Size(..)
   , Propellant(..), Payload(..)) where
@@ -9,7 +9,7 @@ module Data.Vehicle (Vehicle(..), RegTy(..), MissnTy(..), Category(..)
 import Data.Binary
 import GHC.Generics
 
-data Vehicle = Vehicle{regTy :: RegTy, missnTy :: MissnTy, cat :: Category
+data Vehicle = Vehicle{regTy :: RegTy, missnTy :: MissnTy, cat :: Cat
   , clas :: Class, mode :: Mode, caps :: [Capability], siz :: Size
   , props :: [Propellant], payload :: [Payload]}
   deriving (Binary, Eq, Generic, Read, Show)
@@ -19,7 +19,7 @@ data RegTy = Gov | Com deriving (Binary, Eq, Generic, Read, Show)
 data MissnTy = Gov4Gov | Com4Gov | Com4Com | Gov4Com
   deriving (Binary, Eq, Generic, Read, Show)
 
-data Category = Rocket | Spaceplane | LiftingBody | Capsule | Balloon
+data Cat = Rocket | Spaceplane | LiftingBody | Capsule | Balloon
   deriving (Binary, Eq, Generic, Read, Show)
 
 data Class = Class{launchOrien :: LaunchOrientation, launchDom :: LaunchDomain
