@@ -102,7 +102,7 @@ parseCap = asum
 
 parseTermSys :: Parser TermSys
 parseTermSys = asum
-  [ flag Thrust Thrust $ long "thrust"
+  [ flag' Thrust $ long "thrust"
   , flag' OrdFTS $ long "ord-fts" <>
     help "Ordnance flight termination system (FTS)"
   , flag' FlightCtlManip $ long "flight-ctl-manip" <>
@@ -113,7 +113,12 @@ parsePt :: Parser (Double, Double)
 parsePt = (,) <$> option auto (short 'x') <*> option auto (short 'y')
 
 parseSiz :: Parser Size
-parseSiz = undefined
+parseSiz = Size <$> many parseWeight <*> many parseWeight <*>
+  liftA2 (,) (option auto $ long "begin") (option auto $ long "end")
+  <*> many parsePt
+
+parseWeight :: Parser (Integer, (Double, Double))
+parseWeight = (,) <$> option auto (long "stage-num") <*> parsePt
 
 parseProp :: Parser Propellant
 parseProp = Propellant <$> strOption (long "system-type") <*>
