@@ -58,6 +58,6 @@ data Propellant = Propellant{propSysType :: String, fuelCap :: Double
   , oxidCap :: Double, otherProps :: [(String, Double)]}
   deriving (Binary, Eq, Generic, Read, Show)
 
-data Payload = Humans | LiveAnimals | LiveViableBiologics
-  | NonLivingNonHazardCargo | HazardCargo
+data Payload = Human String | Animal String | Biologic String | Cargo String
+  | Hazard String
   deriving (Binary, Eq, Generic, Read, Show)

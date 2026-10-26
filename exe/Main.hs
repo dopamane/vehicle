@@ -137,9 +137,9 @@ parseProp = Propellant <$> strOption (long "system-type") <*>
   many ((,) <$> strOption (long "other-ident") <*> option auto (long "other-cap"))
 
 parsePayload :: Parser Payload
-parsePayload = parserOptionGroup "Payload" $ asum [
-  flag' Humans $ long "humans",
-  flag' LiveAnimals $ long "live-animals",
-  flag' LiveViableBiologics $ long "live-viable-bio",
-  flag' NonLivingNonHazardCargo $ long "non-living-non-hazard",
-  flag' HazardCargo $ long "hazard"]
+parsePayload = parserOptionGroup "Payload" $ asum
+  [ fmap Human $ strOption $ long "human" <> metavar "STR" <> help "humans"
+  , fmap Animal $ strOption $ long "animal" <> metavar "STR" <> help "animals"
+  , fmap Biologic $ strOption $ long "biologic" <> metavar "STR" <> help "plants etc."
+  , fmap Cargo $ strOption $ long "cargo" <> metavar "STR" <> help "non-hazard cargo"
+  , fmap Hazard $ strOption $ long "hazard" <> metavar "STR" <> help "hazardous cargo"]
