@@ -1,6 +1,5 @@
-{-# LANGUAGE DeriveAnyClass    #-}
-{-# LANGUAGE DeriveGeneric     #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric  #-}
 
 module Data.Vehicle (Vehicle(..), Regulatory(..), Mission(..), Category(..)
   , Class(..), LaunchOrientation(..), LaunchDomain(..), LandingOrientation(..)
