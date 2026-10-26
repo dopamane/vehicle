@@ -1,9 +1,9 @@
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric  #-}
 
-module Data.Vehicle (Vehicle(..), RegTy(..), MissnTy(..), Cat(..)
-  , Class(..), LnchOrie(..), LnchDom(..), LandingOrientation(..)
-  , Recovery(..), Mode(..), Capability(..), TermSys(..), Size(..)
+module Data.Vehicle (Vehicle(..), RegTy(..), MissnTy(..), Cat(..), Class(..)
+  , LnchOrie(..), LnchDom(..), LndOrie(..), Recov(..)
+  , Mode(..), Capability(..), TermSys(..), Size(..)
   , Propellant(..), Payload(..)) where
 
 import Data.Binary
@@ -22,9 +22,8 @@ data MissnTy = GovGov | ComGov | ComCom | GovCom
 data Cat = Rocket | Spaceplane | LiftingBody | Capsule | Balloon
   deriving (Binary, Eq, Generic, Read, Show)
 
-data Class = Class{lnchOrie :: LnchOrie, lnchDom :: LnchDom
-  , landingOrien :: LandingOrientation, recovery :: Recovery}
-  deriving (Binary, Eq, Generic, Read, Show)
+data Class = Class{lnchOrie :: LnchOrie, lnchDom :: LnchDom, lndOrie :: LndOrie
+  , recov :: Recov} deriving (Binary, Eq, Generic, Read, Show)
 
 -- | Launch Orientation
 data LnchOrie = VertLnch | HorizLnch | PayldLnch
@@ -34,11 +33,11 @@ data LnchOrie = VertLnch | HorizLnch | PayldLnch
 data LnchDom = Air | Gnd | Sea | Spce
   deriving (Binary, Eq, Generic, Read, Show)
 
-data LandingOrientation = VertLand | HorizLand
-  deriving (Binary, Eq, Generic, Read, Show)
+-- | Landing Orientation
+data LndOrie = VertLand | HorizLand deriving (Binary, Eq, Generic, Read, Show)
 
-data Recovery = AirRecovery | GroundRecovery | SeaRecovery
-  deriving (Binary, Eq, Generic, Read, Show)
+-- | Recovery
+data Recov = AirRec | GndRec | SeaRec deriving (Binary, Eq, Generic, Read, Show)
 
 data Mode = Piloted | UnguidedBallistic | AutoGuided | GuidedExtCmds
   | AutoPilotHybrid deriving (Binary, Eq, Generic, Read, Show)

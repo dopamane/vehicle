@@ -13,8 +13,8 @@ main :: IO ()
 main = do
   cli <- customExecParser prefs' $ pinfo $ showVersion version
   case cli of
-    ReadVehicle fM -> maybe BS.getContents BS.readFile fM >>= \bs ->
-      print $ runGet (get :: Get Vehicle) bs
+    ReadVehicle fM ->
+      print . runGet (get :: Get Vehicle) =<< maybe BS.getContents BS.readFile fM
     WriteVehicle v fM -> maybe BS.putStr BS.writeFile fM $ runPut $ put v
 
 prefs' :: ParserPrefs
@@ -70,23 +70,19 @@ parseCat = parserOptionGroup "Category" $ asum
 parseClass :: Parser Class
 parseClass = parserOptionGroup "Class" $ Class
   <$> asum
-    [ flag VertLnch VertLnch $ long "vert-lnch" <> help "vertical launch orientation default"
-    , flag' HorizLnch $ long "horiz-lnch" <> help "horizontal launch orientation"
-    , flag' PayldLnch $ long "payld-lnch" <> help "payload launch orientation"]
+    [ flag VertLnch VertLnch $ long "vlnch" <> help "vertical launch orientation default"
+    , flag' HorizLnch $ long "hlnch" <> help "horizontal launch orientation"
+    , flag' PayldLnch $ long "plnch" <> help "payload launch orientation"]
   <*> asum [flag Air Air $ long "air" <> help "air launch domain default",
     flag' Gnd $ long "gnd" <> help "ground launch domain",
     flag' Sea $ long "sea" <> help "sea launch domain",
     flag' Spce $ long "spce" <> help "space launch domain"]
-  <*> parseLandingOrien <*> parseRecovery
-
-
-parseLandingOrien :: Parser LandingOrientation
-parseLandingOrien = flag VertLand VertLand (long "vert") <|>
-  flag' HorizLand (long "horiz")
-
-parseRecovery :: Parser Recovery
-parseRecovery = flag AirRecovery AirRecovery (long "air") <|>
-  flag' GroundRecovery (long "ground") <|> flag' SeaRecovery (long "sea")
+  <*> asum [flag VertLand VertLand $ long "vlnd" <>
+    help "vertical landing orientation default",
+    flag' HorizLand $ long "hlnd" <> help "horizontal landing orientation"]
+  <*> asum [flag AirRec AirRec $ long "air-rec" <> help "air recovery default",
+    flag' GndRec $ long "gnd-rec" <> help "ground recovery",
+    flag' SeaRec $ long "sea-rec" <> help "sea recovery"]
 
 parseMode :: Parser Mode
 parseMode = asum [flag Piloted Piloted $ long "piloted",
