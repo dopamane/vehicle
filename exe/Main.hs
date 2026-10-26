@@ -101,7 +101,13 @@ parseCap = asum
   ]
 
 parseTermSys :: Parser TermSys
-parseTermSys = undefined
+parseTermSys = asum
+  [ flag Thrust Thrust $ long "thrust"
+  , flag' OrdFTS $ long "ord-fts" <>
+    help "Ordnance flight termination system (FTS)"
+  , flag' FlightCtlManip $ long "flight-ctl-manip" <>
+    help "Flight control manipulation"
+  , flag' Other $ long "other"]
 
 parsePt :: Parser (Double, Double)
 parsePt = undefined
