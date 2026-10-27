@@ -49,4 +49,8 @@ test-suite test
   main-is:          Main.hs
   build-depends:
     base < 5,
+    binary,
+    hedgehog,
+    tasty,
+    tasty-hedgehog,
     vehicle

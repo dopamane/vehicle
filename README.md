@@ -5,5 +5,7 @@ Development
 
 ```
 cabal build
+cabal haddock
+cabal test
 cabal run vhcl -- --help
 ```
