@@ -46,13 +46,13 @@ data Mode = Piloted | UnguidedBallistic | AutoGuided | GuidedExtCmds
 
 data Cap = AntiColisn | Proplsv | StatPwrFlight Double |
   FastSlowApprchLndingSpd Plot Double | GearCfg String | JetiBdy String |
-  Stge Integer Bool (Maybe Bool) | TermSys TSys
+  Stge Int Bool (Maybe Bool) | TermSys TSys
   deriving (Binary, Eq, Generic, Read, Show)
 
 data TSys = Thrustt | OrdFTS | FlightCtlManip | Ots String
   deriving (Binary, Eq, Generic, Read, Show)
 
-data Size = LnchSz Integer Double Double | RntrySz Integer Double Double
+data Size = LnchSz Int Double Double | RntrySz Int Double Double
   | Explosv Double Double | Thrustp Plot
   deriving (Binary, Eq, Generic, Read, Show)
 
@@ -64,8 +64,8 @@ data Payld = Human String | Animal String | Biologic String | Cargo String
   deriving (Binary, Eq, Generic, Read, Show)
 
 data Missn = Orb String Plot | Suborb String Plot
-  | NASUsage String Integer Integer Plot | Windw String Integer Integer
-  | Flex String Integer | AdvNoticeOp String Double
+  | NASUsage String Int Int Plot | Windw String Int Int
+  | Flex String Int | AdvNoticeOp String Double
   deriving (Binary, Eq, Generic, Read, Show)
 
 type Plot = [(Double, Double)]
