@@ -164,12 +164,17 @@ parseMissn :: Parser Missn
 parseMissn = parserOptionGroup "Mission" $ asum
   [ fmap Orb $ some $ (,)
     <$> strOption (long "orb" <> metavar "STR" <> help "orbital plot descriptor")
-    <*> some ((,) <$> option auto (short 'a' <> metavar "DBL" <> help "orbital altitude")
+    <*> many ((,) <$> option auto (short 'a' <> metavar "DBL" <> help "orbital altitude")
                   <*> option auto (short 't' <> metavar "DBL" <> help "orbital time"))
   , Suborb <$> strOption (long "suborb" <> metavar "STR" <> help "suborbital plot descriptor")
-    <*> some ((,) <$> option auto (short 'a' <> metavar "DBL" <> help "suborbital altitude")
+    <*> many ((,) <$> option auto (short 'a' <> metavar "DBL" <> help "suborbital altitude")
                   <*> option auto (short 't' <> metavar "DBL" <> help "suborbital time"))
-  , flag' NASUsage $ long "nas-usage" <> help "NAS usage"
+  , fmap NASUsage $ some $ NAS
+    <$> strOption (long "nas-desc" <> metavar "STR" <> help "NAS descriptor")
+    <*> option auto (long "nas-strt" <> metavar "INT" <> help "NAS start MET")
+    <*> option auto (long "nas-end" <> metavar "INT" <> help  "NAS end MET")
+    <*> many ((,) <$> option auto (long "lon" <> metavar "DBL" <> help "NAS longitude")
+                  <*> option auto (long "lat" <> metavar "DBL" <> help "NAS latitude"))
   , flag' LnchWin $ long "lnch-win" <> help "launch window"
   , flag' RntryWin $ long "rntry-win" <> help "reentry window"
   , flag' TgtFlex $ long "tgt-flex" <> help "target flex"
