@@ -75,7 +75,7 @@ parseCat = parserOptionGroup "Category" $ asum
 
 parseClass :: Parser Class
 parseClass = parserOptionGroup "Class" $ asum
-  [ LnchOrie <$> asum
+  [ LnchOri <$> asum
     [ flag' VertLnch $ long "vlnch" <> help "vertical launch orientation"
     , flag' HorizLnch $ long "hlnch" <> help "horizontal launch orientation"
     , flag' PayldLnch $ long "plnch" <> help "payload launch orientation"]
@@ -84,7 +84,7 @@ parseClass = parserOptionGroup "Class" $ asum
     , flag' Gnd $ long "gnd" <> help "ground launch domain"
     , flag' Sea $ long "sea" <> help "sea launch domain"
     , flag' Spce $ long "spce" <> help "space launch domain"]
-  , LndOrie <$> asum
+  , LndOri <$> asum
     [ flag' VertLand $ long "vlnd" <> help "vertical landing orientation"
     , flag' HorizLand $ long "hlnd" <> help "horizontal landing orientation"]
   , Recov <$> asum

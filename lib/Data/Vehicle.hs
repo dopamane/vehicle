@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveGeneric  #-}
 
 module Data.Vehicle (Vehicle(..), Reg(..), MissnTy(..), Cat(..), Class(..)
-  , LnchOrie(..), LnchDom(..), LndOrie(..), Recov(..), Mode(..), Cap(..)
+  , LnchOri(..), LnchDom(..), LndOri(..), Recov(..), Mode(..), Cap(..)
   , TSys(..), Size(..), Prop(..), Payld(..)
   ) where
 
@@ -22,11 +22,11 @@ data MissnTy = GovGov String | ComGov String | ComCom String | GovCom String
 data Cat = Rocket | Spaceplane | LiftingBody | Capsule | Balloon
   deriving (Binary, Eq, Generic, Read, Show)
 
-data Class = LnchOrie LnchOrie | LnchDom LnchDom | LndOrie LndOrie | Recov Recov
+data Class = LnchOri LnchOri | LnchDom LnchDom | LndOri LndOri | Recov Recov
   deriving (Binary, Eq, Generic, Read, Show)
 
 -- | Launch Orientation
-data LnchOrie = VertLnch | HorizLnch | PayldLnch
+data LnchOri = VertLnch | HorizLnch | PayldLnch
   deriving (Binary, Eq, Generic, Read, Show)
 
 -- | Launch domain
@@ -34,7 +34,7 @@ data LnchDom = Air | Gnd | Sea | Spce
   deriving (Binary, Eq, Generic, Read, Show)
 
 -- | Landing Orientation
-data LndOrie = VertLand | HorizLand deriving (Binary, Eq, Generic, Read, Show)
+data LndOri = VertLand | HorizLand deriving (Binary, Eq, Generic, Read, Show)
 
 -- | Recovery
 data Recov = AirRec | GndRec | SeaRec deriving (Binary, Eq, Generic, Read, Show)
