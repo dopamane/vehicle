@@ -48,10 +48,10 @@ genPlot :: MonadGen m => m Plot
 genPlot = genList $ (,) <$> genDbl <*> genDbl
 
 genInt :: MonadGen m => m Int
-genInt = Gen.int $ Range.linearFrom 0 (-2^(29 :: Integer)) (2^(29 :: Integer)-1)
+genInt = Gen.int $ Range.linearFrom 0 (-(2^(29 :: Integer))) (2^(29 :: Integer)-1)
 
 genDbl :: MonadGen m => m Double
-genDbl = Gen.double $ Range.linearFracFrom 0 (-999999999999) 999999999999
+genDbl = Gen.double $ Range.linearFracFrom 0 (-9999999999999) 9999999999999
 
 genStr :: MonadGen m => m String
 genStr = Gen.string rangeList Gen.unicode
@@ -60,4 +60,4 @@ genList :: MonadGen m => m a -> m [a]
 genList = Gen.list rangeList
 
 rangeList :: Range Int
-rangeList = Range.linearFrom 0 0 255
+rangeList = Range.linearFrom 0 0 256
