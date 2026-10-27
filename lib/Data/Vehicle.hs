@@ -3,7 +3,7 @@
 
 module Data.Vehicle (Vehicle(..), Reg(..), MissnTy(..), Cat(..), Class(..)
   , LnchOri(..), LnchDom(..), LndOri(..), Recov(..), Mode(..), Cap(..)
-  , TSys(..), Size(..), Prop(..), Payld(..), Missn(..), NAS(..), Plot
+  , TSys(..), Size(..), Prop(..), Payld(..), Missn(..), Plot
   ) where
 
 import Data.Binary
@@ -61,12 +61,9 @@ data Payld = Human String | Animal String | Biologic String | Cargo String
   | Hazard String
   deriving (Binary, Eq, Generic, Read, Show)
 
-data Missn = Orb [(String, Plot)] | Suborb String Plot
-  | NASUsage [NAS] | Windw String Integer Integer | TgtFlex
-  | AdvNoticeOp
-  deriving (Binary, Eq, Generic, Read, Show)
-
-data NAS = NAS{desc :: String, strt :: Integer, end :: Integer, plot :: Plot}
+data Missn = Orb String Plot | Suborb String Plot
+  | NASUsage String Integer Integer Plot | Windw String Integer Integer
+  | Flex String Integer | AdvNoticeOp String Double
   deriving (Binary, Eq, Generic, Read, Show)
 
 type Plot = [(Double, Double)]

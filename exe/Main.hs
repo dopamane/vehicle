@@ -162,15 +162,13 @@ parsePayld = parserOptionGroup "Payload" $ asum
 
 parseMissn :: Parser Missn
 parseMissn = parserOptionGroup "Mission" $ asum
-  [ fmap Orb $ some $ (,)
-    <$> strOption (long "orb" <> metavar "STR" <> help "orbital plot descriptor")
+  [ Orb <$> strOption (long "orb" <> metavar "STR" <> help "orbital plot descriptor")
     <*> many ((,) <$> option auto (short 'a' <> metavar "DBL" <> help "orbital altitude")
                   <*> option auto (short 't' <> metavar "DBL" <> help "orbital time"))
   , Suborb <$> strOption (long "suborb" <> metavar "STR" <> help "suborbital plot descriptor")
     <*> many ((,) <$> option auto (short 'a' <> metavar "DBL" <> help "suborbital altitude")
                   <*> option auto (short 't' <> metavar "DBL" <> help "suborbital time"))
-  , fmap NASUsage $ some $ NAS
-    <$> strOption (long "nas-desc" <> metavar "STR" <> help "NAS descriptor")
+  , NASUsage <$> strOption (long "nas-desc" <> metavar "STR" <> help "NAS descriptor")
     <*> option auto (long "nas-strt" <> metavar "INT" <> help "NAS start MET")
     <*> option auto (long "nas-end" <> metavar "INT" <> help  "NAS end MET")
     <*> many ((,) <$> option auto (long "lon" <> metavar "DBL" <> help "NAS longitude")
@@ -178,5 +176,7 @@ parseMissn = parserOptionGroup "Mission" $ asum
   , Windw <$> option auto (long "windw" <> metavar "STR" <> help "window descriptor")
     <*> option auto (long "hs" <> metavar "INT" <> help "window duration hours")
     <*> option auto (long "ms" <> metavar "INT" <> help "window duration minutes")
-  , flag' TgtFlex $ long "tgt-flex" <> help "target flex"
-  , flag' AdvNoticeOp $ long "adv-notice-op" <> help "advance notice operations"]
+  , Flex <$> strOption (long "flex-op" <> metavar "STR" <> help "flex operation")
+    <*> option auto (long "flex-val" <> metavar "INT" <> help "flex value")
+  , AdvNoticeOp <$> strOption (long "note-op" <> metavar "STR" <> help "advance notice operation")
+    <*> option auto (long "note-time" <> metavar "DBL" <> help "advance notice time")]
