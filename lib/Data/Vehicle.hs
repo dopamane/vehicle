@@ -3,7 +3,7 @@
 
 module Data.Vehicle (Vehicle(..), Reg(..), MissnTy(..), Cat(..), Class(..)
   , LnchOri(..), LnchDom(..), LndOri(..), Recov(..), Mode(..), Cap(..)
-  , TSys(..), Size(..), Prop(..), Payld(..)
+  , TSys(..), Size(..), Prop(..), Payld(..), Missn(..)
   ) where
 
 import Data.Binary
@@ -11,7 +11,7 @@ import GHC.Generics
 
 data Vehicle = Vehicle{reg :: Reg, missnTy :: MissnTy, cat :: Cat
   , clas :: [Class], mode :: Mode, caps :: [Cap], sizs :: [Size], props :: [Prop]
-  , payld :: [Payld]}
+  , payld :: [Payld], missn :: [Missn]}
   deriving (Binary, Eq, Generic, Read, Show)
 
 data Reg = Gov String | Com String deriving (Binary, Eq, Generic, Read, Show)
@@ -59,4 +59,8 @@ data Prop = Sys String | Fuel String Double | Oxidizr String Double | OtherProp 
 
 data Payld = Human String | Animal String | Biologic String | Cargo String
   | Hazard String
+  deriving (Binary, Eq, Generic, Read, Show)
+
+data Missn = Orbital | Suborbital | NASUsage | LnchWin | RntryWin
+  | TgtFlex | AdvNoticeOp
   deriving (Binary, Eq, Generic, Read, Show)

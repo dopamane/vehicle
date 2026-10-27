@@ -41,7 +41,7 @@ fileArg h = strArgument $ metavar "FILE" <> completer (bashCompleter "file") <> 
 parseVehicle :: Parser Vehicle
 parseVehicle = Vehicle <$> parseReg <*> parseMissnTy <*> parseCat <*> many parseClass
   <*> parseMode <*> many parseCap <*> many parseSiz <*> many parseProp
-  <*> many parsePayld
+  <*> many parsePayld <*> many parseMissn
 
 parseReg :: Parser Reg
 parseReg = parserOptionGroup "Regulatory type" $
@@ -159,3 +159,13 @@ parsePayld = parserOptionGroup "Payload" $ asum
   , fmap Biologic $ strOption $ long "biologic" <> metavar "STR" <> help "plants etc."
   , fmap Cargo $ strOption $ long "cargo" <> metavar "STR" <> help "non-hazard cargo"
   , fmap Hazard $ strOption $ long "hazard" <> metavar "STR" <> help "hazardous cargo"]
+
+parseMissn :: Parser Missn
+parseMissn = parserOptionGroup "Mission" $ asum
+  [ flag' Orbital $ long "orbital" <> help "orbital"
+  , flag' Suborbital $ long "suborbital" <> help "suborbital"
+  , flag' NASUsage $ long "nas-usage" <> help "NAS usage"
+  , flag' LnchWin $ long "lnch-win" <> help "launch window"
+  , flag' RntryWin $ long "rntry-win" <> help "reentry window"
+  , flag' TgtFlex $ long "tgt-flex" <> help "target flex"
+  , flag' AdvNoticeOp $ long "adv-notice-op" <> help "advance notice operations"]
