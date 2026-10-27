@@ -28,13 +28,15 @@ data CLI = ReadVehicle (Maybe FilePath) | WriteVehicle Vehicle (Maybe FilePath)
 
 parser :: Parser CLI
 parser = hsubparser $ mconcat
-  [command "r" $ info (ReadVehicle <$> optional fileArg) $ progDesc "Read vehicle data"
-  , command "w" $ info (WriteVehicle <$> parseVehicle <*> optional fileArg) $
+  [command "r" $ info (fmap ReadVehicle $
+    optional $ fileArg "Optional binary input file otherwise stream STDIN") $
+    progDesc "Read vehicle data"
+  , command "w" $ info (WriteVehicle <$> parseVehicle <*>
+    optional (fileArg "Optional binary output file otherwise stream STDOUT")) $
     progDesc "Write vehicle data"]
 
-fileArg :: Parser FilePath
-fileArg = strArgument $ metavar "FILE" <> completer (bashCompleter "file")
-  <> help "Optional binary input file otherwise stream STDIN"
+fileArg :: String -> Parser FilePath
+fileArg h = strArgument $ metavar "FILE" <> completer (bashCompleter "file") <> help h
 
 parseVehicle :: Parser Vehicle
 parseVehicle = Vehicle <$> parseRegTy <*> parseMissnTy <*> parseCat <*> parseClass
