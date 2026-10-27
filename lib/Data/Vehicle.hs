@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric  #-}
 
-module Data.Vehicle (Vehicle(..), RegTy(..), MissnTy(..), Cat(..), Class(..)
+module Data.Vehicle (Vehicle(..), Reg(..), MissnTy(..), Cat(..), Class(..)
   , LnchOrie(..), LnchDom(..), LndOrie(..), Recov(..), Mode(..), Cap(..)
   , TSys(..), Size(..), Prop(..), Payld(..)
   ) where
@@ -9,14 +9,14 @@ module Data.Vehicle (Vehicle(..), RegTy(..), MissnTy(..), Cat(..), Class(..)
 import Data.Binary
 import GHC.Generics
 
-data Vehicle = Vehicle{regTy :: RegTy, missnTy :: MissnTy, cat :: Cat
+data Vehicle = Vehicle{reg :: Reg, missnTy :: MissnTy, cat :: Cat
   , clas :: Class, mode :: Mode, caps :: [Cap], sizs :: [Size], props :: [Prop]
   , payld :: [Payld]}
   deriving (Binary, Eq, Generic, Read, Show)
 
-data RegTy = Gov | Com deriving (Binary, Eq, Generic, Read, Show)
+data Reg = Gov String | Com String deriving (Binary, Eq, Generic, Read, Show)
 
-data MissnTy = GovGov | ComGov | ComCom | GovCom
+data MissnTy = GovGov String | ComGov String | ComCom String | GovCom String
   deriving (Binary, Eq, Generic, Read, Show)
 
 data Cat = Rocket | Spaceplane | LiftingBody | Capsule | Balloon

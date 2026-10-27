@@ -39,21 +39,25 @@ fileArg :: String -> Parser FilePath
 fileArg h = strArgument $ metavar "FILE" <> completer (bashCompleter "file") <> help h
 
 parseVehicle :: Parser Vehicle
-parseVehicle = Vehicle <$> parseRegTy <*> parseMissnTy <*> parseCat <*> parseClass
+parseVehicle = Vehicle <$> parseReg <*> parseMissnTy <*> parseCat <*> parseClass
   <*> parseMode <*> many parseCap <*> many parseSiz <*> many parseProp
   <*> many parsePayld
 
-parseRegTy :: Parser RegTy
-parseRegTy = parserOptionGroup "Regulatory type" $
-  flag Gov Gov (long "gov" <> help "Government default") <|>
-  flag' Com (long "com" <> help "Commerical")
+parseReg :: Parser Reg
+parseReg = parserOptionGroup "Regulatory type" $
+  fmap Gov (strOption $ long "gov" <> metavar "STR" <> help "Government") <|>
+  fmap Com (strOption $ long "com" <> metavar "STR" <> help "Commerical")
 
 parseMissnTy :: Parser MissnTy
 parseMissnTy = parserOptionGroup "Mission Type" $ asum
-  [ flag GovGov GovGov $ long "gov-gov" <> help "Government for Government default"
-  , flag' ComGov $ long "com-gov" <> help "Commerical for Government"
-  , flag' ComCom $ long "com-com" <> help "Commerical for Commercial"
-  , flag' GovCom $ long "gov-com" <> help "Government for Commerical"
+  [ fmap GovGov $ strOption $ long "gov-gov" <> metavar "STR" <>
+    help "Government for Government"
+  , fmap ComGov $ strOption $ long "com-gov" <> metavar "STR" <>
+    help "Commerical for Government"
+  , fmap ComCom $ strOption $ long "com-com" <> metavar "STR" <>
+    help "Commerical for Commercial"
+  , fmap GovCom $ strOption $ long "gov-com" <> metavar "STR" <>
+    help "Government for Commerical"
   ]
 
 parseCat :: Parser Cat
