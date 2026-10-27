@@ -3,7 +3,7 @@
 
 module Data.Vehicle (Vehicle(..), Reg(..), MissnTy(..), Cat(..), Class(..)
   , LnchOri(..), LnchDom(..), LndOri(..), Recov(..), Mode(..), Cap(..)
-  , TSys(..), Size(..), Prop(..), Payld(..), Missn(..)
+  , TSys(..), Size(..), Prop(..), Payld(..), Missn(..), Plot
   ) where
 
 import Data.Binary
@@ -43,7 +43,7 @@ data Mode = Piloted | UnguidedBallistic | AutoGuided | GuidedExtCmds
   | AutoPilotHybrid deriving (Binary, Eq, Generic, Read, Show)
 
 data Cap = AntiColisn | Proplsv | StatPwrFlight Double |
-  FastSlowApprchLndingSpd [(Double, Double)] Double | GearCfg String | JetiBdy String |
+  FastSlowApprchLndingSpd Plot Double | GearCfg String | JetiBdy String |
   Stge Integer Bool (Maybe Bool) | TermSys TSys
   deriving (Binary, Eq, Generic, Read, Show)
 
@@ -51,7 +51,7 @@ data TSys = Thrustt | OrdFTS | FlightCtlManip | Ots String
   deriving (Binary, Eq, Generic, Read, Show)
 
 data Size = LnchSz Integer Double Double | RntrySz Integer Double Double
-  | Explosv Double Double | Thrustp [(Double, Double)]
+  | Explosv Double Double | Thrustp Plot
   deriving (Binary, Eq, Generic, Read, Show)
 
 data Prop = Sys String | Fuel String Double | Oxidizr String Double | OtherProp String Double
@@ -61,6 +61,8 @@ data Payld = Human String | Animal String | Biologic String | Cargo String
   | Hazard String
   deriving (Binary, Eq, Generic, Read, Show)
 
-data Missn = Orbital | Suborbital | NASUsage | LnchWin | RntryWin
+data Missn = Orb [(String, Plot)] | Suborb String Plot | NASUsage | LnchWin | RntryWin
   | TgtFlex | AdvNoticeOp
   deriving (Binary, Eq, Generic, Read, Show)
+
+type Plot = [(Double, Double)]

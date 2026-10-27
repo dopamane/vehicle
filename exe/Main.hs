@@ -162,8 +162,13 @@ parsePayld = parserOptionGroup "Payload" $ asum
 
 parseMissn :: Parser Missn
 parseMissn = parserOptionGroup "Mission" $ asum
-  [ flag' Orbital $ long "orbital" <> help "orbital"
-  , flag' Suborbital $ long "suborbital" <> help "suborbital"
+  [ fmap Orb $ some $ (,)
+    <$> strOption (long "orb" <> metavar "STR" <> help "orbital plot descriptor")
+    <*> some ((,) <$> option auto (short 'a' <> metavar "DBL" <> help "orbital altitude")
+                  <*> option auto (short 't' <> metavar "DBL" <> help "orbital time"))
+  , Suborb <$> strOption (long "suborb" <> metavar "STR" <> help "suborbital plot descriptor")
+    <*> some ((,) <$> option auto (short 'a' <> metavar "DBL" <> help "suborbital altitude")
+                  <*> option auto (short 't' <> metavar "DBL" <> help "suborbital time"))
   , flag' NASUsage $ long "nas-usage" <> help "NAS usage"
   , flag' LnchWin $ long "lnch-win" <> help "launch window"
   , flag' RntryWin $ long "rntry-win" <> help "reentry window"
