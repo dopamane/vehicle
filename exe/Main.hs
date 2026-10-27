@@ -175,7 +175,8 @@ parseMissn = parserOptionGroup "Mission" $ asum
     <*> option auto (long "nas-end" <> metavar "INT" <> help  "NAS end MET")
     <*> many ((,) <$> option auto (long "lon" <> metavar "DBL" <> help "NAS longitude")
                   <*> option auto (long "lat" <> metavar "DBL" <> help "NAS latitude"))
-  , flag' LnchWin $ long "lnch-win" <> help "launch window"
-  , flag' RntryWin $ long "rntry-win" <> help "reentry window"
+  , Windw <$> option auto (long "windw" <> metavar "STR" <> help "window descriptor")
+    <*> option auto (long "hs" <> metavar "INT" <> help "window duration hours")
+    <*> option auto (long "ms" <> metavar "INT" <> help "window duration minutes")
   , flag' TgtFlex $ long "tgt-flex" <> help "target flex"
   , flag' AdvNoticeOp $ long "adv-notice-op" <> help "advance notice operations"]

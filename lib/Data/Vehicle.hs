@@ -62,7 +62,7 @@ data Payld = Human String | Animal String | Biologic String | Cargo String
   deriving (Binary, Eq, Generic, Read, Show)
 
 data Missn = Orb [(String, Plot)] | Suborb String Plot
-  | NASUsage [NAS] | LnchWin | RntryWin | TgtFlex
+  | NASUsage [NAS] | Windw String Integer Integer | TgtFlex
   | AdvNoticeOp
   deriving (Binary, Eq, Generic, Read, Show)
 
