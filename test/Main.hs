@@ -23,21 +23,17 @@ genVehicle = Vehicle
   <$> Gen.choice [Gov <$> genStr, Com <$> genStr]
   <*> Gen.choice [GovGov <$> genStr, ComGov <$> genStr, ComCom <$> genStr
     , GovCom <$> genStr]
-  <*> Gen.choice (pure <$> [Rocket,Spaceplane,LiftingBody,Capsule,Balloon])
+  <*> Gen.enumBounded
+  <*> genList (Gen.choice [LnchOri <$> Gen.enumBounded
+    , LnchDom <$> Gen.enumBounded, LndOri <$> Gen.enumBounded
+    , Recov <$> Gen.enumBounded])
+  <*> Gen.enumBounded
   <*> pure []
-  <*> pure Piloted
   <*> pure []
   <*> pure []
+  <*> genList (Gen.choice [Human <$> genStr, Animal <$> genStr
+    , Biologic <$> genStr, Cargo <$> genStr, Hazard <$> genStr])
   <*> pure []
-  <*> genList genPayld
-  <*> pure []
-
-genClass :: MonadGen m => m Class
-genClass = undefined
-
-genPayld :: MonadGen m => m Payld
-genPayld = Gen.choice [Human <$> genStr, Animal <$> genStr, Biologic <$> genStr
-  , Cargo <$> genStr, Hazard <$> genStr]
 
 genStr :: MonadGen m => m String
 genStr = Gen.string rangeList Gen.unicode

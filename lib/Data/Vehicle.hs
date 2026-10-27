@@ -20,27 +20,29 @@ data MissnTy = GovGov String | ComGov String | ComCom String | GovCom String
   deriving (Binary, Eq, Generic, Read, Show)
 
 data Cat = Rocket | Spaceplane | LiftingBody | Capsule | Balloon
-  deriving (Binary, Eq, Generic, Read, Show)
+  deriving (Binary, Bounded, Enum, Eq, Generic, Read, Show)
 
 data Class = LnchOri LnchOri | LnchDom LnchDom | LndOri LndOri | Recov Recov
   deriving (Binary, Eq, Generic, Read, Show)
 
 -- | Launch Orientation
 data LnchOri = VertLnch | HorizLnch | PayldLnch
-  deriving (Binary, Eq, Generic, Read, Show)
+  deriving (Binary, Bounded, Enum, Eq, Generic, Read, Show)
 
 -- | Launch domain
 data LnchDom = Air | Gnd | Sea | Spce
-  deriving (Binary, Eq, Generic, Read, Show)
+  deriving (Binary, Bounded, Enum, Eq, Generic, Read, Show)
 
 -- | Landing Orientation
-data LndOri = VertLand | HorizLand deriving (Binary, Eq, Generic, Read, Show)
+data LndOri = VertLand | HorizLand
+  deriving (Binary, Bounded, Enum, Eq, Generic, Read, Show)
 
 -- | Recovery
-data Recov = AirRec | GndRec | SeaRec deriving (Binary, Eq, Generic, Read, Show)
+data Recov = AirRec | GndRec | SeaRec
+  deriving (Binary, Bounded, Enum, Eq, Generic, Read, Show)
 
 data Mode = Piloted | UnguidedBallistic | AutoGuided | GuidedExtCmds
-  | AutoPilotHybrid deriving (Binary, Eq, Generic, Read, Show)
+  | AutoPilotHybrid deriving (Binary, Bounded, Enum, Eq, Generic, Read, Show)
 
 data Cap = AntiColisn | Proplsv | StatPwrFlight Double |
   FastSlowApprchLndingSpd Plot Double | GearCfg String | JetiBdy String |
