@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveGeneric  #-}
 
 module Data.Vehicle (Vehicle(..), RegTy(..), MissnTy(..), Cat(..), Class(..)
-  , LnchOrie(..), LnchDom(..), LndOrie(..), Recov(..), Mode(..), Capability(..)
+  , LnchOrie(..), LnchDom(..), LndOrie(..), Recov(..), Mode(..), Cap(..)
   , TSys(..), Size(..), Prop(..), Payld(..)
   ) where
 
@@ -10,8 +10,8 @@ import Data.Binary
 import GHC.Generics
 
 data Vehicle = Vehicle{regTy :: RegTy, missnTy :: MissnTy, cat :: Cat
-  , clas :: Class, mode :: Mode, caps :: [Capability], sizs :: [Size]
-  , props :: [Prop], payld :: [Payld]}
+  , clas :: Class, mode :: Mode, caps :: [Cap], sizs :: [Size], props :: [Prop]
+  , payld :: [Payld]}
   deriving (Binary, Eq, Generic, Read, Show)
 
 data RegTy = Gov | Com deriving (Binary, Eq, Generic, Read, Show)
@@ -42,9 +42,9 @@ data Recov = AirRec | GndRec | SeaRec deriving (Binary, Eq, Generic, Read, Show)
 data Mode = Piloted | UnguidedBallistic | AutoGuided | GuidedExtCmds
   | AutoPilotHybrid deriving (Binary, Eq, Generic, Read, Show)
 
-data Capability = AntiCollision | Propulsive | StationaryPwrdFlight String |
-  FastSlowApproachLandingSpeed [(Double, Double)] Double | GearCfg String | JettiBody String |
-  Stage Integer Bool (Maybe Bool) | TermSys TSys
+data Cap = AntiColisn | Proplsv | StatPwrFlight Double |
+  FastSlowApprchLndingSpd [(Double, Double)] Double | GearCfg String | JetiBdy String |
+  Stge Integer Bool (Maybe Bool) | TermSys TSys
   deriving (Binary, Eq, Generic, Read, Show)
 
 data TSys = Thrustt | OrdFTS | FlightCtlManip | Ots String

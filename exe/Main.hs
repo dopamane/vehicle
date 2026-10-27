@@ -96,27 +96,28 @@ parseMode = parserOptionGroup "Mode" $ asum
     help "flight ctl by human and/or computer"
   ]
 
-parseCap :: Parser Capability
-parseCap = asum
-  [ flag' AntiCollision $ long "anti-collision"
-  , flag' Propulsive $ long "propulsive"
-  , fmap StationaryPwrdFlight $ strOption $ long "stat-pwr-flight"
-    <> help "Stationary powered flight"
-  , FastSlowApproachLandingSpeed <$> many parsePt <*>
-    option auto (long "landing-speed")
-  , GearCfg <$> strOption (long "gear-cfg")
-  , JettiBody <$> strOption (long "jetti-bdy")
-  , Stage <$> option auto (long "stage") <*> switch (long "ctl-reentry") <*>
-    optional (switch $ long "reusable")
+parseCap :: Parser Cap
+parseCap = parserOptionGroup "Capability" $ asum
+  [ flag' AntiColisn $ long "acolisn" <> help "anti-collision sense & avoid"
+  , flag' Proplsv $ long "proplsv" <> help "propulsive mode other than attitude ctl"
+  , fmap StatPwrFlight $ option auto $ long "spf" <> metavar "DBL"
+    <> help "Stationary powered flight duration seconds"
+  , FastSlowApprchLndingSpd <$>
+    many ((,) <$> option auto (short 'a' <> metavar "DBL" <> help "altitude")
+              <*> option auto (short 's' <> metavar "DBL" <> help "speed"))
+    <*> option auto (long "lnding-spd" <> metavar "DBL" <> help "final landing speed")
+  , GearCfg <$> strOption (long "gear-cfg" <> metavar "STR" <> help "landing gear config")
+  , JetiBdy <$> strOption (long "jeti-bdy" <> metavar "STR" <> help "jettison body")
+  , Stge <$> option auto (long "stge" <> metavar "INT" <> help "stage num") <*>
+    switch (long "ctl-rntry" <> help "controlled reentry") <*>
+    optional (flag' True (long "reuse" <> help "reusable") <|>
+      flag' False (long "no-reuse" <> help "non-reusable"))
   , TermSys <$> asum
     [ flag' Thrustt $ long "thrst" <> help "thrust termination system"
     , flag' OrdFTS $ long "ofts" <> help "ordnance flight termination system (FTS)"
     , flag' FlightCtlManip $ long "fcm" <> help "flight control manipulation termination system"
     , fmap Ots $ strOption $ long "ots" <> metavar "STR" <>
       help "other termination system"]]
-
-parsePt :: Parser (Double, Double)
-parsePt = (,) <$> option auto (short 'x') <*> option auto (short 'y')
 
 parseSiz :: Parser Size
 parseSiz = parserOptionGroup "Size" $ asum
