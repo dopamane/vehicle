@@ -39,7 +39,7 @@ fileArg :: String -> Parser FilePath
 fileArg h = strArgument $ metavar "FILE" <> completer (bashCompleter "file") <> help h
 
 parseVehicle :: Parser Vehicle
-parseVehicle = Vehicle <$> parseReg <*> parseMissnTy <*> parseCat <*> parseClass
+parseVehicle = Vehicle <$> parseReg <*> parseMissnTy <*> parseCat <*> many parseClass
   <*> parseMode <*> many parseCap <*> many parseSiz <*> many parseProp
   <*> many parsePayld
 
@@ -74,21 +74,23 @@ parseCat = parserOptionGroup "Category" $ asum
     \ hovers in stratosphere"]
 
 parseClass :: Parser Class
-parseClass = parserOptionGroup "Class" $ Class
-  <$> asum
-    [ flag VertLnch VertLnch $ long "vlnch" <> help "vertical launch orientation default"
+parseClass = parserOptionGroup "Class" $ asum
+  [ LnchOrie <$> asum
+    [ flag' VertLnch $ long "vlnch" <> help "vertical launch orientation"
     , flag' HorizLnch $ long "hlnch" <> help "horizontal launch orientation"
     , flag' PayldLnch $ long "plnch" <> help "payload launch orientation"]
-  <*> asum [flag Air Air $ long "air" <> help "air launch domain default",
-    flag' Gnd $ long "gnd" <> help "ground launch domain",
-    flag' Sea $ long "sea" <> help "sea launch domain",
-    flag' Spce $ long "spce" <> help "space launch domain"]
-  <*> asum [flag VertLand VertLand $ long "vlnd" <>
-    help "vertical landing orientation default",
-    flag' HorizLand $ long "hlnd" <> help "horizontal landing orientation"]
-  <*> asum [flag AirRec AirRec $ long "air-rec" <> help "air recovery default",
-    flag' GndRec $ long "gnd-rec" <> help "ground recovery",
-    flag' SeaRec $ long "sea-rec" <> help "sea recovery"]
+  , LnchDom <$> asum
+    [ flag' Air $ long "air" <> help "air launch domain"
+    , flag' Gnd $ long "gnd" <> help "ground launch domain"
+    , flag' Sea $ long "sea" <> help "sea launch domain"
+    , flag' Spce $ long "spce" <> help "space launch domain"]
+  , LndOrie <$> asum
+    [ flag' VertLand $ long "vlnd" <> help "vertical landing orientation"
+    , flag' HorizLand $ long "hlnd" <> help "horizontal landing orientation"]
+  , Recov <$> asum
+    [ flag' AirRec $ long "air-rec" <> help "air recovery"
+    , flag' GndRec $ long "gnd-rec" <> help "ground recovery"
+    , flag' SeaRec $ long "sea-rec" <> help "sea recovery"]]
 
 parseMode :: Parser Mode
 parseMode = parserOptionGroup "Mode" $ asum

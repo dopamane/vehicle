@@ -10,7 +10,7 @@ import Data.Binary
 import GHC.Generics
 
 data Vehicle = Vehicle{reg :: Reg, missnTy :: MissnTy, cat :: Cat
-  , clas :: Class, mode :: Mode, caps :: [Cap], sizs :: [Size], props :: [Prop]
+  , clas :: [Class], mode :: Mode, caps :: [Cap], sizs :: [Size], props :: [Prop]
   , payld :: [Payld]}
   deriving (Binary, Eq, Generic, Read, Show)
 
@@ -22,8 +22,8 @@ data MissnTy = GovGov String | ComGov String | ComCom String | GovCom String
 data Cat = Rocket | Spaceplane | LiftingBody | Capsule | Balloon
   deriving (Binary, Eq, Generic, Read, Show)
 
-data Class = Class{lnchOrie :: LnchOrie, lnchDom :: LnchDom, lndOrie :: LndOrie
-  , recov :: Recov} deriving (Binary, Eq, Generic, Read, Show)
+data Class = LnchOrie LnchOrie | LnchDom LnchDom | LndOrie LndOrie | Recov Recov
+  deriving (Binary, Eq, Generic, Read, Show)
 
 -- | Launch Orientation
 data LnchOrie = VertLnch | HorizLnch | PayldLnch
