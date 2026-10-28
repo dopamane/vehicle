@@ -45,7 +45,7 @@ data Mode = Piloted | UnguidedBallistic | AutoGuided | GuidedExtCmds
   | AutoPilotHybrid deriving (Binary, Bounded, Enum, Eq, Generic, Read, Show)
 
 data Cap = AntiColisn | Proplsv | StatPwrFlight Double |
-  FastSlowApprchLndingSpd Plot Double | GearCfg String | JetiBdy String |
+  FastSlowApprchLndingSpd String Plot Double | GearCfg String | JetiBdy String |
   Stge Int Bool (Maybe Bool) | TermSys TSys
   deriving (Binary, Eq, Generic, Read, Show)
 
@@ -53,7 +53,7 @@ data TSys = Thrustt | OrdFTS | FlightCtlManip | Ots String
   deriving (Binary, Eq, Generic, Read, Show)
 
 data Size = LnchSz Int Double Double | RntrySz Int Double Double
-  | Explosv Double Double | Thrustp Plot
+  | Explosv Double Double | Thrustp String Plot
   deriving (Binary, Eq, Generic, Read, Show)
 
 data Prop = Sys String | Fuel String Double | Oxidizr String Double | OtherProp String Double

@@ -29,13 +29,13 @@ genVehicle = Vehicle
     , Recov <$> Gen.enumBounded])
   <*> Gen.enumBounded
   <*> genList (Gen.choice [pure AntiColisn, pure Proplsv
-    , StatPwrFlight <$> genDbl, FastSlowApprchLndingSpd <$> genPlot <*> genDbl
+    , StatPwrFlight <$> genDbl, FastSlowApprchLndingSpd <$> genStr <*> genPlot <*> genDbl
     , GearCfg <$> genStr, JetiBdy <$> genStr, Stge <$> genInt <*> Gen.bool
       <*> Gen.maybe Gen.bool, TermSys <$> Gen.choice [pure Thrustt, pure OrdFTS
       , pure FlightCtlManip, Ots <$> genStr]])
   <*> genList (Gen.choice [LnchSz <$> genInt <*> genDbl <*> genDbl
     , RntrySz <$> genInt <*> genDbl <*> genDbl, Explosv <$> genDbl <*> genDbl
-    , Thrustp <$> genPlot])
+    , Thrustp <$> genStr <*> genPlot])
   <*> genList (Gen.choice [Sys <$> genStr, Fuel <$> genStr <*> genDbl
     , Oxidizr <$> genStr <*> genDbl, OtherProp <$> genStr <*> genDbl])
   <*> genList (Gen.choice [Human <$> genStr, Animal <$> genStr
@@ -51,7 +51,7 @@ genInt :: MonadGen m => m Int
 genInt = Gen.int $ Range.linearFrom 0 (-(2^(29 :: Integer))) (2^(29 :: Integer)-1)
 
 genDbl :: MonadGen m => m Double
-genDbl = Gen.double $ Range.linearFracFrom 0 (-9999999999999) 9999999999999
+genDbl = Gen.double $ Range.linearFracFrom 0 (-999999999999999) 999999999999999
 
 genStr :: MonadGen m => m String
 genStr = Gen.string rangeList Gen.unicode

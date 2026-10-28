@@ -45,13 +45,14 @@ parseVehicle = Vehicle <$> parseReg <*> parseMissnTy <*> parseCat <*> many parse
 
 parseReg :: Parser Reg
 parseReg = parserOptionGroup "Regulatory type" $
-  fmap Gov (strOption $ long "gov" <> metavar "STR" <> help "Government") <|>
+  fmap Gov (strOption $ long "gov" <> metavar "STR" <> value "" <> showDefault
+    <> help "Government") <|>
   fmap Com (strOption $ long "com" <> metavar "STR" <> help "Commerical")
 
 parseMissnTy :: Parser MissnTy
 parseMissnTy = parserOptionGroup "Mission Type" $ asum
-  [ fmap GovGov $ strOption $ long "gov-gov" <> metavar "STR" <>
-    help "Government for Government"
+  [ fmap GovGov $ strOption $ long "gov-gov" <> metavar "STR" <> value "" <> showDefault
+    <> help "Government for Government"
   , fmap ComGov $ strOption $ long "com-gov" <> metavar "STR" <>
     help "Commerical for Government"
   , fmap ComCom $ strOption $ long "com-com" <> metavar "STR" <>
@@ -110,9 +111,10 @@ parseCap = parserOptionGroup "Capability" $ asum
   , flag' Proplsv $ long "proplsv" <> help "propulsive mode other than attitude ctl"
   , fmap StatPwrFlight $ option auto $ long "spf" <> metavar "DBL"
     <> help "Stationary powered flight duration seconds"
-  , FastSlowApprchLndingSpd <$>
-    many ((,) <$> option auto (short 'a' <> metavar "DBL" <> help "altitude")
-              <*> option auto (short 's' <> metavar "DBL" <> help "speed"))
+  , FastSlowApprchLndingSpd
+    <$> strOption (long "aprch" <> metavar "STR" <> help "approach descriptor")
+    <*> parsePlot (option auto (short 'a' <> metavar "DBL" <> help "approach altitude"))
+        (option auto (short 's' <> metavar "DBL" <> help "approach speed"))
     <*> option auto (long "lnding-spd" <> metavar "DBL" <> help "final landing speed")
   , GearCfg <$> strOption (long "gear-cfg" <> metavar "STR" <> help "landing gear config")
   , JetiBdy <$> strOption (long "jeti-bdy" <> metavar "STR" <> help "jettison body")
@@ -137,9 +139,9 @@ parseSiz = parserOptionGroup "Size" $ asum
     <*> option auto (long "rntry-end" <> metavar "DBL" <> help "reentry weight end kg")
   , Explosv <$> option auto (long "explo-bgn" <> metavar "DBL" <> help "explosive begin TNT")
     <*> option auto (long "explo-end" <> metavar "DBL" <> help "explosive end TNT")
-  , fmap Thrustp $ some $ (,)
-    <$> option auto (short 't' <> metavar "DBL" <> help "thrust profile time")
-    <*> option auto (short 'n' <> metavar "DBL" <> help "thrust profile N")]
+  , Thrustp <$> strOption (long "thrst-prof" <> metavar "STR" <> help "thrust profile descriptor")
+    <*> parsePlot (option auto (short 't' <> metavar "DBL" <> help "thrust profile time"))
+        (option auto (short 'n' <> metavar "DBL" <> help "thrust profile N"))]
 
 parseProp :: Parser Prop
 parseProp = parserOptionGroup "Propellant" $ asum
@@ -163,16 +165,16 @@ parsePayld = parserOptionGroup "Payload" $ asum
 parseMissn :: Parser Missn
 parseMissn = parserOptionGroup "Mission" $ asum
   [ Orb <$> strOption (long "orb" <> metavar "STR" <> help "orbital plot descriptor")
-    <*> many ((,) <$> option auto (short 'a' <> metavar "DBL" <> help "orbital altitude")
-                  <*> option auto (short 't' <> metavar "DBL" <> help "orbital time"))
+    <*> parsePlot (option auto (short 'b' <> metavar "DBL" <> help "orbital time"))
+    (option auto (short 'o' <> metavar "DBL" <> help "orbital altitude"))
   , Suborb <$> strOption (long "suborb" <> metavar "STR" <> help "suborbital plot descriptor")
-    <*> many ((,) <$> option auto (short 'a' <> metavar "DBL" <> help "suborbital altitude")
-                  <*> option auto (short 't' <> metavar "DBL" <> help "suborbital time"))
+    <*> parsePlot (option auto (short 'c' <> metavar "DBL" <> help "suborbital altitude"))
+    (option auto (short 'd' <> metavar "DBL" <> help "suborbital time"))
   , NASUsage <$> strOption (long "nas-desc" <> metavar "STR" <> help "NAS descriptor")
     <*> option auto (long "nas-strt" <> metavar "INT" <> help "NAS start MET")
     <*> option auto (long "nas-end" <> metavar "INT" <> help  "NAS end MET")
-    <*> many ((,) <$> option auto (long "lon" <> metavar "DBL" <> help "NAS longitude")
-                  <*> option auto (long "lat" <> metavar "DBL" <> help "NAS latitude"))
+    <*> parsePlot (option auto (long "lon" <> metavar "DBL" <> help "NAS longitude"))
+    (option auto (long "lat" <> metavar "DBL" <> help "NAS latitude"))
   , Windw <$> option auto (long "windw" <> metavar "STR" <> help "window descriptor")
     <*> option auto (long "hs" <> metavar "INT" <> help "window duration hours")
     <*> option auto (long "ms" <> metavar "INT" <> help "window duration minutes")
@@ -180,3 +182,6 @@ parseMissn = parserOptionGroup "Mission" $ asum
     <*> option auto (long "flex-val" <> metavar "INT" <> help "flex value")
   , AdvNoticeOp <$> strOption (long "note-op" <> metavar "STR" <> help "advance notice operation")
     <*> option auto (long "note-time" <> metavar "DBL" <> help "advance notice time")]
+
+parsePlot :: (Alternative f, Applicative f) => f a -> f b -> f [(a, b)]
+parsePlot fa fb = many $ (,) <$> fa <*> fb
